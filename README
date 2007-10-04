@@ -1,0 +1,7 @@
+The snprintf(3) implementation shipped with Mutt
+------------------------------------------------
+
+The Mutt project (http://www.mutt.org/) ships an snprintf(3) implementation
+which is based on Patrick Powell's code.  The C99-snprintf code is in turn
+based on the version included with Mutt 1.5.12.  A copy of this version is
+included in this commit.
