@@ -1,0 +1,7 @@
+Patrick Powell's snprintf(3) implementation
+-------------------------------------------
+
+Patrick Powell sent a shar(1) archive containing his original snprintf(3)
+implementation to the Bugtraq mailing list.  A copy of his posting is
+included in the file bugtraq-message.txt, the remaining files were created
+by extracting the shar(1) archive.
