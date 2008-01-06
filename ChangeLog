@@ -1,0 +1,6 @@
+2008-01-06  Holger Weiss <holger@jhweiss.de>
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, NEWS, README,
+	autogen.sh, configure.ac, example.c, snprintf.c, system.h, test.sh,
+	m4/snprintf.m4: Initial revision
+
