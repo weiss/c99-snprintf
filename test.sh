@@ -14,7 +14,7 @@ LIBS="-lm"
 test -n "$CFLAGS" || \
 CFLAGS="-g3 -O2 -Wall -W -Wbad-function-cast -Wcast-align -Wmissing-noreturn \
 	-Wnested-externs -Wpointer-arith -Wsign-compare -Wwrite-strings \
-	-Werror -std=c89 -pedantic"
+	-Werror"
 
 $CC $CFLAGS $CPPFLAGS -o snprintf snprintf.c $LIBS && \
 ./snprintf
