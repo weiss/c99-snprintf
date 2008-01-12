@@ -513,7 +513,7 @@ static void printsep(char *, size_t *, size_t);
 static int getnumsep(int);
 static int getexponent(LDOUBLE);
 static int convert(UINTMAX_T, char *, size_t, int, int);
-static UINTMAX_T cast(LDOUBLE, int *);
+static UINTMAX_T cast(LDOUBLE);
 static UINTMAX_T myround(LDOUBLE);
 static LDOUBLE mypow10(int);
 
@@ -1169,9 +1169,10 @@ again:
 	if (estyle)	/* We want exactly one integer digit. */
 		ufvalue /= mypow10(exponent);
 
-	intpart = cast(ufvalue, overflow);
-	if (*overflow)
+	if ((intpart = cast(ufvalue)) == INTMAX_MAX) {
+		*overflow = 1;
 		return;
+	}
 
 	/*
 	 * Factor of ten with the number of digits needed for the fractional
@@ -1417,7 +1418,7 @@ convert(UINTMAX_T value, char *buf, size_t size, int base, int caps)
 }
 
 static UINTMAX_T
-cast(LDOUBLE value, int *overflow)
+cast(LDOUBLE value)
 {
 	UINTMAX_T result;
 
@@ -1428,10 +1429,9 @@ cast(LDOUBLE value, int *overflow)
 	 * comparison (cf. C99: 6.3.1.4, 2).  It might then equal the LDOUBLE
 	 * value although converting the latter to UINTMAX_T would overflow.
 	 */
-	if (value >= UINTMAX_MAX) {
-		*overflow = 1;
+	if (value >= UINTMAX_MAX)
 		return UINTMAX_MAX;
-	}
+
 	result = value;
 	/*
 	 * At least on NetBSD/sparc64 3.0.2 and 4.99.30, casting long double to
@@ -1444,8 +1444,7 @@ cast(LDOUBLE value, int *overflow)
 static UINTMAX_T
 myround(LDOUBLE value)
 {
-	int overflow;	/* Just a dummy, we don't check for overflow. */
-	UINTMAX_T intpart = cast(value, &overflow);
+	UINTMAX_T intpart = cast(value);
 
 	return ((value -= intpart) < 0.5) ? intpart : intpart + 1;
 }
