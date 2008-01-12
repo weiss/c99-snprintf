@@ -100,7 +100,7 @@
  * 1) The following preprocessor macros should be defined to 1 if the feature or
  *    file in question is available on the target system (by using Autoconf or
  *    other means), though basic functionality should be available as long as
- *    HAVE_STDARG_H is defined correctly:
+ *    HAVE_STDARG_H and HAVE_STDLIB_H are defined correctly:
  *
  *    	HAVE_VSNPRINTF
  *    	HAVE_SNPRINTF
@@ -416,7 +416,7 @@ static void *mymemcpy(void *, void *, size_t);
 
 /*
  * We need an unsigned integer type corresponding to ptrdiff_t (cf. C99:
- * 7.19.6.1, 7).  However, we'll simply use ptrdiff_t and convert it to an
+ * 7.19.6.1, 7).  However, we'll simply use PTRDIFF_T and convert it to an
  * unsigned type if necessary.  This should work just fine in practice.
  */
 #ifndef UPTRDIFF_T
@@ -1424,7 +1424,7 @@ cast(LDOUBLE value)
 
 	/*
 	 * We check for ">=" and not for ">" because if UINTMAX_MAX cannot be
-	 * represented exactly as an LDOUBLE value (but is less than DBL_MAX),
+	 * represented exactly as an LDOUBLE value (but is less than LDBL_MAX),
 	 * it may be increased to the nearest higher representable value for the
 	 * comparison (cf. C99: 6.3.1.4, 2).  It might then equal the LDOUBLE
 	 * value although converting the latter to UINTMAX_T would overflow.
@@ -1435,8 +1435,8 @@ cast(LDOUBLE value)
 	result = value;
 	/*
 	 * At least on NetBSD/sparc64 3.0.2 and 4.99.30, casting long double to
-	 * an integer type converts 1.9 to 2 instead of 1 (which violates the
-	 * standard).  Sigh.
+	 * an integer type converts e.g. 1.9 to 2 instead of 1 (which violates
+	 * the standard).  Sigh.
 	 */
 	return (result <= value) ? result : result - 1;
 }
