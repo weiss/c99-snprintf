@@ -493,7 +493,7 @@ static void *mymemcpy(void *, void *, size_t);
 #define ISNAN(x) (x != x)
 #endif	/* !defined(ISNAN) */
 #ifndef ISINF
-#define ISINF(x) (!ISNAN(x) && ISNAN(x - x))
+#define ISINF(x) (x != 0.0 && x + x == x)
 #endif	/* !defined(ISINF) */
 
 #ifdef OUTCHAR
@@ -1387,12 +1387,9 @@ getexponent(LDOUBLE value)
 	/*
 	 * We check for 100 > exponent > -100 in order to work around possible
 	 * endless loops which could happen (at least) in the second loop (at
-	 * least) if we're called with an infinite value.  Normally, we check
-	 * for infinity before calling this function using our ISINF() macro,
-	 * but that check fails (at least) on IRIX 6.5.30.  Obviously, we'll
-	 * return an incorrect exponent in this case, but if we didn't detect
-	 * infinity (or NaN) before, the conversion result will we wrong anyway.
-	 * Our infinity and NaN detection on systems like IRIX should be fixed.
+	 * least) if we're called with an infinite value.  However, we checked
+	 * for infinity before calling this function using our ISINF() macro, so
+	 * this might be somewhat paranoid.
 	 */
 	while (tmp < 1.0 && tmp > 0.0 && --exponent > -100)
 		tmp *= 10;
