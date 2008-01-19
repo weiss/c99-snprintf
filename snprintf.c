@@ -1356,9 +1356,9 @@ printsep(char *str, size_t *len, size_t size)
 	if (lc->thousands_sep != NULL)
 		for (i = 0; lc->thousands_sep[i] != '\0'; i++)
 			OUTCHAR(str, *len, size, lc->thousands_sep[i]);
-#else
-	OUTCHAR(str, *len, size, ',');
+	else
 #endif	/* HAVE_LOCALECONV && HAVE_LCONV_THOUSANDS_SEP */
+		OUTCHAR(str, *len, size, ',');
 }
 
 static int
