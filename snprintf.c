@@ -1236,19 +1236,22 @@ again:
 		} else
 			esign = '+';
 
-		/* Convert the exponent. */
-		epos = convert(exponent, econvert, sizeof(econvert), 10, 0);
+		/*
+		 * Convert the exponent.  The sizeof(econvert) is 4.  So, the
+		 * econvert buffer can hold e.g. "e+99" and "e-99".  We don't
+		 * support an exponent which contains more than two digits.
+		 * Therefore, the following stores are safe.
+		 */
+		epos = convert(exponent, econvert, 2, 10, 0);
 		/*
 		 * C99 says: "The exponent always contains at least two digits,
 		 * and only as many more digits as necessary to represent the
 		 * exponent." (7.19.6.1, 8)
 		 */
-		if (epos == 1 && (size_t)epos < sizeof(econvert))
+		if (epos == 1)
 			econvert[epos++] = '0';
-		if ((size_t)epos < sizeof(econvert))
-			econvert[epos++] = esign;
-		if ((size_t)epos < sizeof(econvert))
-			econvert[epos++] = (flags & PRINT_F_UP) ? 'E' : 'e';
+		econvert[epos++] = esign;
+		econvert[epos++] = (flags & PRINT_F_UP) ? 'E' : 'e';
 	}
 
 	/* Convert the integer part and the fractional part. */
@@ -1383,15 +1386,15 @@ getexponent(LDOUBLE value)
 	int exponent = 0;
 
 	/*
-	 * We check for 100 > exponent > -100 in order to work around possible
+	 * We check for 99 > exponent > -99 in order to work around possible
 	 * endless loops which could happen (at least) in the second loop (at
 	 * least) if we're called with an infinite value.  However, we checked
 	 * for infinity before calling this function using our ISINF() macro, so
 	 * this might be somewhat paranoid.
 	 */
-	while (tmp < 1.0 && tmp > 0.0 && --exponent > -100)
+	while (tmp < 1.0 && tmp > 0.0 && --exponent > -99)
 		tmp *= 10;
-	while (tmp >= 10.0 && ++exponent < 100)
+	while (tmp >= 10.0 && ++exponent < 99)
 		tmp /= 10;
 
 	return exponent;
