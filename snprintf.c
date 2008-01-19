@@ -1348,13 +1348,11 @@ printsep(char *str, size_t *len, size_t size)
 {
 #if HAVE_LOCALECONV && HAVE_LCONV_THOUSANDS_SEP
 	struct lconv *lc = localeconv();
+	int i;
 
-	if (lc->thousands_sep[0] != '\0') {
-		if (lc->thousands_sep[1] == '\0')
-			OUTCHAR(str, *len, size, lc->thousands_sep[0]);
-		else	/* Huh, multiple characters. */
-			fmtstr(str, len, size, lc->thousands_sep, 0, -1, 0);
-	}
+	if (lc->thousands_sep != NULL)
+		for (i = 0; lc->thousands_sep[i] != '\0'; i++)
+			OUTCHAR(str, *len, size, lc->thousands_sep[i]);
 #else
 	OUTCHAR(str, *len, size, ',');
 #endif	/* HAVE_LOCALECONV && HAVE_LCONV_THOUSANDS_SEP */
