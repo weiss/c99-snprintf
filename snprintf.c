@@ -1169,7 +1169,7 @@ again:
 	if (estyle)	/* We want exactly one integer digit. */
 		ufvalue /= mypow10(exponent);
 
-	if ((intpart = cast(ufvalue)) == INTMAX_MAX) {
+	if ((intpart = cast(ufvalue)) == UINTMAX_MAX) {
 		*overflow = 1;
 		return;
 	}
