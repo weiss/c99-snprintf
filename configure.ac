@@ -1,6 +1,6 @@
 dnl $Id$
 
-AC_INIT([C99-snprintf], [1.0], [holger@jhweiss.de])
+AC_INIT([C99-snprintf], [1.1], [holger@jhweiss.de])
 AC_PREREQ([2.60])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE

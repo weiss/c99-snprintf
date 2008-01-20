@@ -23,6 +23,11 @@
 /*
  * History
  *
+ * 2008-01-20 Holger Weiss <holger@jhweiss.de> for C99-snprintf 1.1:
+ *
+ * 	Fixed the detection of infinite floating point values on IRIX (and
+ * 	possibly other systems) and applied another few minor cleanups.
+ *
  * 2008-01-06 Holger Weiss <holger@jhweiss.de> for C99-snprintf 1.0:
  *
  * 	Added a lot of new features, fixed many bugs, and incorporated various
