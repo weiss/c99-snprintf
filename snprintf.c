@@ -774,50 +774,33 @@ rpl_vsnprintf(char *str, size_t size, const char *format, va_list args)
 			case 'A':
 				/* Not yet supported, we'll use "%F". */
 				/* FALLTHROUGH */
+			case 'E':
+				if (ch == 'E')
+					flags |= PRINT_F_TYPE_E;
+				/* FALLTHROUGH */
+			case 'G':
+				if (ch == 'G')
+					flags |= PRINT_F_TYPE_G;
+				/* FALLTHROUGH */
 			case 'F':
 				flags |= PRINT_F_UP;
+				/* FALLTHROUGH */
 			case 'a':
 				/* Not yet supported, we'll use "%f". */
+				/* FALLTHROUGH */
+			case 'e':
+				if (ch == 'e')
+					flags |= PRINT_F_TYPE_E;
+				/* FALLTHROUGH */
+			case 'g':
+				if (ch == 'g')
+					flags |= PRINT_F_TYPE_G;
 				/* FALLTHROUGH */
 			case 'f':
 				if (cflags == PRINT_C_LDOUBLE)
 					fvalue = va_arg(args, LDOUBLE);
 				else
 					fvalue = va_arg(args, double);
-				fmtflt(str, &len, size, fvalue, width,
-				    precision, flags, &overflow);
-				if (overflow)
-					goto out;
-				break;
-			case 'E':
-				flags |= PRINT_F_UP;
-				/* FALLTHROUGH */
-			case 'e':
-				flags |= PRINT_F_TYPE_E;
-				if (cflags == PRINT_C_LDOUBLE)
-					fvalue = va_arg(args, LDOUBLE);
-				else
-					fvalue = va_arg(args, double);
-				fmtflt(str, &len, size, fvalue, width,
-				    precision, flags, &overflow);
-				if (overflow)
-					goto out;
-				break;
-			case 'G':
-				flags |= PRINT_F_UP;
-				/* FALLTHROUGH */
-			case 'g':
-				flags |= PRINT_F_TYPE_G;
-				if (cflags == PRINT_C_LDOUBLE)
-					fvalue = va_arg(args, LDOUBLE);
-				else
-					fvalue = va_arg(args, double);
-				/*
-				 * If the precision is zero, it is treated as
-				 * one (cf. C99: 7.19.6.1, 8).
-				 */
-				if (precision == 0)
-					precision = 1;
 				fmtflt(str, &len, size, fvalue, width,
 				    precision, flags, &overflow);
 				if (overflow)
@@ -1123,6 +1106,12 @@ fmtflt(char *str, size_t *len, size_t size, LDOUBLE fvalue, int width,
 	/* "%e" (or "%E") or "%g" (or "%G") conversion. */
 	if (flags & PRINT_F_TYPE_E || flags & PRINT_F_TYPE_G) {
 		if (flags & PRINT_F_TYPE_G) {
+			/*
+			 * If the precision is zero, it is treated as one (cf.
+			 * C99: 7.19.6.1, 8).
+			 */
+			if (precision == 0)
+				precision = 1;
 			/*
 			 * For "%g" (and "%G") conversions, the precision
 			 * specifies the number of significant digits, which
