@@ -903,8 +903,8 @@ out:
 	else if (size > 0)
 		str[size - 1] = '\0';
 
-	if (overflow || len >= INT_MAX) {
-		errno = overflow ? EOVERFLOW : ERANGE;
+	if (overflow || len > INT_MAX) {
+		errno = EOVERFLOW;
 		return -1;
 	}
 	return (int)len;
