@@ -1552,7 +1552,7 @@ rpl_asprintf(va_alist) va_dcl
 }
 #endif	/* !HAVE_ASPRINTF */
 #else	/* Dummy declaration to avoid empty translation unit warnings. */
-int main(void);
+int main(int argc, char **argv);
 #endif	/* !HAVE_SNPRINTF || !HAVE_VSNPRINTF || !HAVE_ASPRINTF || [...] */
 
 #if TEST_SNPRINTF
