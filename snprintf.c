@@ -115,6 +115,7 @@
  *    	HAVE_STDDEF_H
  *    	HAVE_STDINT_H
  *    	HAVE_STDLIB_H
+ *    	HAVE_FLOAT_H
  *    	HAVE_INTTYPES_H
  *    	HAVE_LOCALE_H
  *    	HAVE_LOCALECONV
@@ -226,6 +227,9 @@
 #ifndef HAVE_STDLIB_H
 #define HAVE_STDLIB_H 1
 #endif	/* HAVE_STDLIB_H */
+#ifndef HAVE_FLOAT_H
+#define HAVE_FLOAT_H 1
+#endif	/* HAVE_FLOAT_H */
 #ifndef HAVE_INTTYPES_H
 #define HAVE_INTTYPES_H 1
 #endif	/* HAVE_INTTYPES_H */
@@ -320,6 +324,9 @@ static void *mymemcpy(void *, void *, size_t);
 #if !HAVE_VSNPRINTF
 #include <errno.h>	/* For ERANGE and errno. */
 #include <limits.h>	/* For *_MAX. */
+#if HAVE_FLOAT_H
+#include <float.h>	/* For *DBL_{MIN,MAX}_10_EXP. */
+#endif	/* HAVE_FLOAT_H */
 #if HAVE_INTTYPES_H
 #include <inttypes.h>	/* For intmax_t (if not defined in <stdint.h>). */
 #endif	/* HAVE_INTTYPES_H */
@@ -378,8 +385,12 @@ static void *mymemcpy(void *, void *, size_t);
 #ifndef LDOUBLE
 #if HAVE_LONG_DOUBLE
 #define LDOUBLE long double
+#define LDOUBLE_MIN_10_EXP LDBL_MIN_10_EXP
+#define LDOUBLE_MAX_10_EXP LDBL_MAX_10_EXP
 #else
 #define LDOUBLE double
+#define LDOUBLE_MIN_10_EXP DBL_MIN_10_EXP
+#define LDOUBLE_MAX_10_EXP DBL_MAX_10_EXP
 #endif	/* HAVE_LONG_DOUBLE */
 #endif	/* !defined(LDOUBLE) */
 
@@ -1380,15 +1391,15 @@ getexponent(LDOUBLE value)
 	int exponent = 0;
 
 	/*
-	 * We check for 310 > exponent > -310 in order to work around possible
-	 * endless loops which could happen (at least) in the second loop (at
-	 * least) if we're called with an infinite value.  However, we checked
-	 * for infinity before calling this function using our ISINF() macro, so
-	 * this might be somewhat paranoid.
+	 * We check for LDOUBLE_MAX_10_EXP >= exponent >= LDOUBLE_MIN_10_EXP in
+	 * order to work around possible endless loops which could happen (at
+	 * least) in the second loop (at least) if we're called with an infinite
+	 * value.  However, we checked for infinity before calling this function
+	 * using our ISINF() macro, so this might be somewhat paranoid.
 	 */
-	while (tmp < 1.0 && tmp > 0.0 && --exponent > -310)
+	while (tmp < 1.0 && tmp > 0.0 && --exponent >= LDOUBLE_MIN_10_EXP)
 		tmp *= 10;
-	while (tmp >= 10.0 && ++exponent < 310)
+	while (tmp >= 10.0 && ++exponent <= LDOUBLE_MAX_10_EXP)
 		tmp /= 10;
 
 	return exponent;
