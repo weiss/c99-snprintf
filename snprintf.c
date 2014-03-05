@@ -2094,4 +2094,4 @@ do {                                                                           \
 }
 #endif	/* TEST_SNPRINTF */
 
-/* vim: set joinspaces textwidth=80: */
+/* vim: set joinspaces noexpandtab textwidth=80 cinoptions=(4,u0: */
