@@ -509,7 +509,7 @@ static void *mymemcpy(void *, void *, size_t);
 #define ISNAN(x) (x != x)
 #endif	/* !defined(ISNAN) */
 #ifndef ISINF
-#define ISINF(x) (x != 0.0 && x + x == x)
+#define ISINF(x) ((x < -1 || x > 1) && x + x == x)
 #endif	/* !defined(ISINF) */
 
 #ifdef OUTCHAR
