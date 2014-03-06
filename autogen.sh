@@ -1,6 +1,4 @@
 #!/bin/sh
-#
-# $Id$
 
 for f in \
     "autoheader261" \

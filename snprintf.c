@@ -1,5 +1,3 @@
-/* $Id$ */
-
 /*
  * Copyright (c) 1995 Patrick Powell.
  *

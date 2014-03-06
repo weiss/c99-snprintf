@@ -1,5 +1,3 @@
-# $Id$
-
 # Copyright (c) 2008 Holger Weiss <holger@jhweiss.de>.
 #
 # This code may freely be used, modified and/or redistributed for any purpose.

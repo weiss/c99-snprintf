@@ -1,6 +1,4 @@
 #!/bin/sh
-#
-# $Id$
 
 test -n "$CC" || \
 CC="gcc"

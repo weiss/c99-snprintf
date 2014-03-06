@@ -1,5 +1,3 @@
-# $Id$
-
 bin_PROGRAMS = example
 pkgdata_DATA = AUTHORS ChangeLog COPYING NEWS README
 example_SOURCES = example.c system.h
