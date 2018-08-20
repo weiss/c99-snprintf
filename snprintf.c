@@ -1469,7 +1469,7 @@ mypow10(int exponent)
 
 #if !HAVE_VASPRINTF
 #if NEED_MYMEMCPY
-void *
+static void *
 mymemcpy(void *dst, void *src, size_t len)
 {
 	const char *from = src;
