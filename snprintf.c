@@ -271,10 +271,6 @@
 #define HAVE___VA_COPY 1
 #endif	/* !defined(HAVE___VA_COPY) */
 #endif	/* HAVE_CONFIG_H */
-#define snprintf rpl_snprintf
-#define vsnprintf rpl_vsnprintf
-#define asprintf rpl_asprintf
-#define vasprintf rpl_vasprintf
 #endif	/* TEST_SNPRINTF */
 
 #if !HAVE_SNPRINTF || !HAVE_VSNPRINTF || !HAVE_ASPRINTF || !HAVE_VASPRINTF
@@ -296,6 +292,7 @@
 #endif	/* HAVE_STDARG_H */
 
 #if !HAVE_VASPRINTF
+#define vasprintf rpl_vasprintf
 #if HAVE_STDLIB_H
 #include <stdlib.h>	/* For malloc(3). */
 #endif	/* HAVE_STDLIB_H */
@@ -320,6 +317,7 @@ static void *mymemcpy(void *, void *, size_t);
 #endif	/* !HAVE_VASPRINTF */
 
 #if !HAVE_VSNPRINTF
+#define vsnprintf rpl_vsnprintf
 #include <errno.h>	/* For ERANGE and errno. */
 #include <limits.h>	/* For *_MAX. */
 #if HAVE_FLOAT_H
@@ -337,6 +335,14 @@ static void *mymemcpy(void *, void *, size_t);
 #if HAVE_STDINT_H
 #include <stdint.h>	/* For intmax_t. */
 #endif	/* HAVE_STDINT_H */
+
+#if !HAVE_ASPRINTF
+#define asprintf rpl_asprintf
+#endif	/* !HAVE_ASPRINTF */
+
+#if !HAVE_SNPRINTF
+#define snprintf rpl_snprintf
+#endif	/* !HAVE_SNPRINTF */
 
 /* Support for unsigned long long int.  We may also need ULLONG_MAX. */
 #ifndef ULONG_MAX	/* We may need ULONG_MAX as a fallback. */
