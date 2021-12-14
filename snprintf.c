@@ -1447,6 +1447,9 @@ myround(LDOUBLE value)
 {
 	UINTMAX_T intpart = cast(value);
 
+	if (intpart == UINTMAX_MAX)
+		return UINTMAX_MAX;
+	
 	return ((value -= intpart) < 0.5) ? intpart : intpart + 1;
 }
 
