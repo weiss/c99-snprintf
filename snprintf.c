@@ -930,8 +930,8 @@ fmtstr(char *str, size_t *len, size_t size, const char *value, int width,
 		value = "(null)";
 
 	/* If a precision was specified, don't read the string past it. */
-	for (strln = 0; value[strln] != '\0' &&
-	    (noprecision || strln < precision); strln++)
+	for (strln = 0; (noprecision || strln < precision) &&
+	    value[strln] != '\0'; strln++)
 		continue;
 
 	if ((padlen = width - strln) < 0)
