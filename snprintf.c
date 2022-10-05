@@ -943,7 +943,7 @@ fmtstr(char *str, size_t *len, size_t size, const char *value, int width,
 		OUTCHAR(str, *len, size, ' ');
 		padlen--;
 	}
-	while (*value != '\0' && (noprecision || precision-- > 0)) {
+	while ((noprecision || precision-- > 0) && *value != '\0') {
 		OUTCHAR(str, *len, size, *value);
 		value++;
 	}
